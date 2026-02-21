@@ -67,20 +67,34 @@ await client.PutObjectAsync(request);
 //{
 //    Console.WriteLine($"Помилка при отриманні списку об'єктів: {ex.Message}");
 //}
-var request = new DeleteObjectRequest
+//var request = new DeleteObjectRequest
+//{
+//    BucketName = "my-p32bucket",
+//    Key = "images/image.jpg"
+//};
+
+//try
+//{
+//    await client.DeleteObjectAsync(request);
+//    Console.WriteLine("Об'єкт успішно видалено.");
+//}
+//catch (AmazonS3Exception ex)
+//{
+//    Console.WriteLine($"Помилка при видаленні об'єкта: {ex.Message}");
+//}
+var request = new PutBucketRequest
 {
-    BucketName = "my-p32bucket",
-    Key = "images/image.jpg"
+    BucketName = "my-new-p32bucket-2026"
 };
 
 try
 {
-    await client.DeleteObjectAsync(request);
-    Console.WriteLine("Об'єкт успішно видалено.");
+    await client.PutBucketAsync(request);
+    Console.WriteLine("Бакет успішно створено.");
 }
 catch (AmazonS3Exception ex)
 {
-    Console.WriteLine($"Помилка при видаленні об'єкта: {ex.Message}");
+    Console.WriteLine($"Помилка при створенні бакета: {ex.Message}");
 }
 
 
