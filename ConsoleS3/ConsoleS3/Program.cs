@@ -50,23 +50,37 @@ await client.PutObjectAsync(request);
 //    Console.WriteLine($"Помилка при отриманні об'єкта: {ex.Message}");
 //}
 
-var request = new ListObjectsV2Request
+//var request = new ListObjectsV2Request
+//{
+//    BucketName = "my-p32bucket"
+//};
+//try
+//{
+//    var response = await client.ListObjectsV2Async(request);
+//    Console.WriteLine("Файли в бакеті:");
+//    foreach (var obj in response.S3Objects)
+//    {
+//        Console.WriteLine($"- {obj.Key} (розмір: {obj.Size} байт)");
+//    }
+//}
+//catch (AmazonS3Exception ex)
+//{
+//    Console.WriteLine($"Помилка при отриманні списку об'єктів: {ex.Message}");
+//}
+var request = new DeleteObjectRequest
 {
-    BucketName = "my-p32bucket"
+    BucketName = "my-p32bucket",
+    Key = "images/image.jpg"
 };
+
 try
 {
-    var response = await client.ListObjectsV2Async(request);
-    Console.WriteLine("Файли в бакеті:");
-    foreach (var obj in response.S3Objects)
-    {
-        Console.WriteLine($"- {obj.Key} (розмір: {obj.Size} байт)");
-    }
+    await client.DeleteObjectAsync(request);
+    Console.WriteLine("Об'єкт успішно видалено.");
 }
 catch (AmazonS3Exception ex)
 {
-    Console.WriteLine($"Помилка при отриманні списку об'єктів: {ex.Message}");
+    Console.WriteLine($"Помилка при видаленні об'єкта: {ex.Message}");
 }
-
 
 
