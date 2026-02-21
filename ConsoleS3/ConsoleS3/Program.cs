@@ -30,24 +30,42 @@ var request = new PutObjectRequest
 await client.PutObjectAsync(request);
 */
 
-string bucketName = "my-p32bucket";
-string downloadsDir = "downloads";
-Directory.CreateDirectory(downloadsDir);
-string path = Path.Combine(downloadsDir, "image.jpg");
-var request = new GetObjectRequest // звертаюся до об'єкта в S3, щоб отримати його вміст
-{
-    BucketName = bucketName,
-    Key = "images/image.jpg",
-};
+//string bucketName = "my-p32bucket";
+//string downloadsDir = "downloads";
+//Directory.CreateDirectory(downloadsDir);
+//string path = Path.Combine(downloadsDir, "image.jpg");
+//var request = new GetObjectRequest // звертаюся до об'єкта в S3, щоб отримати його вміст
+//{
+//    BucketName = bucketName,
+//    Key = "images/image.jpg",
+//};
 
+//try
+//{
+//    using var response = await client.GetObjectAsync(request);
+//    await response.WriteResponseStreamToFileAsync(path, false, new CancellationToken());
+//}
+//catch (AmazonS3Exception ex)
+//{
+//    Console.WriteLine($"Помилка при отриманні об'єкта: {ex.Message}");
+//}
+
+var request = new ListObjectsV2Request
+{
+    BucketName = "my-girl-images"
+};
 try
 {
-    using var response = await client.GetObjectAsync(request);
-    await response.WriteResponseStreamToFileAsync(path, false, new CancellationToken());
+    var response = await client.ListObjectsV2Async(request);
+    Console.WriteLine("Файли в бакеті:");
+    foreach (var obj in response.S3Objects)
+    {
+        Console.WriteLine($"- {obj.Key} (розмір: {obj.Size} байт)");
+    }
 }
 catch (AmazonS3Exception ex)
 {
-    Console.WriteLine($"Помилка при отриманні об'єкта: {ex.Message}");
+    Console.WriteLine($"Помилка при отриманні списку об'єктів: {ex.Message}");
 }
 
 
