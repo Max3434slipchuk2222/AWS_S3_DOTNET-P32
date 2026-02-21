@@ -13,6 +13,7 @@ var credentials = new BasicAWSCredentials(
 
 var client = new AmazonS3Client(credentials, RegionEndpoint.EUCentral1);
 
+/*
 string dir = "images";
 string path = Path.Combine(dir, "image.jpg");
 
@@ -27,6 +28,27 @@ var request = new PutObjectRequest
 };
 
 await client.PutObjectAsync(request);
+*/
+
+string bucketName = "my-p32bucket";
+string downloadsDir = "downloads";
+Directory.CreateDirectory(downloadsDir);
+string path = Path.Combine(downloadsDir, "image.jpg");
+var request = new GetObjectRequest // звертаюся до об'єкта в S3, щоб отримати його вміст
+{
+    BucketName = bucketName,
+    Key = "images/image.jpg",
+};
+
+try
+{
+    using var response = await client.GetObjectAsync(request);
+    await response.WriteResponseStreamToFileAsync(path, false, new CancellationToken());
+}
+catch (AmazonS3Exception ex)
+{
+    Console.WriteLine($"Помилка при отриманні об'єкта: {ex.Message}");
+}
 
 
 
