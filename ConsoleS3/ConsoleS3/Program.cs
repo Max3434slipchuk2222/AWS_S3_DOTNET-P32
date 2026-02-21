@@ -52,7 +52,7 @@ await client.PutObjectAsync(request);
 
 var request = new ListObjectsV2Request
 {
-    BucketName = "my-girl-images"
+    BucketName = "my-p32bucket"
 };
 try
 {
